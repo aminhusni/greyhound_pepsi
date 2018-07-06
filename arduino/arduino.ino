@@ -22,7 +22,6 @@ unsigned int failed;
 
 void setup() {
     Serial.begin(9600);
-    Serial.println("Detecting Sound Peaks V5");
 
     // Servo attached is pin11
     myservo.attach(11);
@@ -49,12 +48,11 @@ void dispense(){
     delay(5000);
     myservo.write(0);
     delay(5000);
-    Serial.println("*** Can dispensed");
 
 }
 
 void voicecheck(){
-    Serial.println("Voice Check Started");
+
     soundCheck = 0;
     // Beginning of Start Voice Detection
     while(soundCheck < 7){
@@ -86,9 +84,9 @@ void voicecheck(){
         // Send to Pi after 7 secs
         if (soundCheck > 6) {
 
-            Serial.print(word1);
-            Serial.print(",");
-            Serial.println(word2);
+//            Serial.print(word1);
+//            Serial.print(",");
+//            Serial.println(word2);
             word1 = 0;
             word2 = 0;
         }
