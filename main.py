@@ -23,8 +23,6 @@ bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
 enbutton = tk.Button(win, text="EN", font=myFont, command=bm, height=10, width=10)
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
 
-def checkvoice():
-
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
