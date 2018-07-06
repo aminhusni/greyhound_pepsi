@@ -3,9 +3,9 @@
 // If GPIO is HIGH, despense drink
 // Written by Stanley Seow
 
-#include <Servo.h>
 
-Servo myservo;
+#include <Servo.h>
+    Servo myservo;
 
 int i = 0;
 bool serialPlotter = 0;
@@ -21,76 +21,77 @@ unsigned int failed;
 #define GRN 10
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("Detecting Sound Peaks V5");
+    Serial.begin(9600);
+    Serial.println("Detecting Sound Peaks V5");
 
-  // Servo attached is pin11
-  myservo.attach(11);
+    // Servo attached is pin11
+    myservo.attach(11);
 
-  // Move servo a bit to indicate servo is working
-  myservo.write(0);
-  delay(500);
-  myservo.write(30);
-  delay(500);
-  myservo.write(0);
+    // Move servo a bit to indicate servo is working
+    myservo.write(0);
+    delay(500);
+    myservo.write(30);
+    delay(500);
+    myservo.write(0);
 
 }
 
 void loop() {
 
-  // Beginning of Start Voice Detection
-  if ( digitalRead ( 2 ) == LOW ) {
-    Serial.println("STaRT");
-  // read the input on analog pin 0:
-  int sensor = analogRead(A4);
+voicecheck();
+delay(5000);
 
-  int sound = sensor - 400;
+} 
 
-  if ( sound < 90 || sound > 120  ) {
-        i++;
-        //Serial.print("Peak ");
-  }
-  delay(50);
-
-  while ( millis() - lastCheck > 1000 ) {
-    
-    if ( i >= 1 && i < 4 ) {
-      //Serial.println("Short word");
-      word1++;
-    } else if ( i >= 4 && i < 10 ) {
-      //Serial.println("Long word");
-      word2++;
-    }
-
-    i = 0;
-    lastCheck = millis();
-    soundCheck++;
-  }
-
-  // Send to Pi after 7 secs
-  if ( soundCheck > 6  ) {
-    // Print to RPI short words, long words
-    Serial.print(word1);
-    Serial.print(",");
-    Serial.println(word2);
-    word1 = 0;
-    word2 = 0;
-    soundCheck = 0;
-    
-  }
-
-  } // End of Voice Detection
-
-
-  // If D3 is HIGH, dispense drink
-  if ( digitalRead( 3 ) == HIGH ) {
+void dispense(){
 
     myservo.write(180);
     delay(5000);
     myservo.write(0);
     delay(5000);
     Serial.println("*** Can dispensed");
-  }
 
-} // End of loop
+}
 
+void voicecheck(){
+    Serial.println("Voice Check Started");
+    soundCheck = 0;
+    // Beginning of Start Voice Detection
+    while(soundCheck < 7){
+        // read the input on analog pin 0:
+        int sensor = analogRead(A4);
+        int sound = sensor - 400;
+
+        //Peak detection
+        if (sound < 90 || sound > 120) {
+            i++;
+        }
+        delay(50);
+
+        while (millis() - lastCheck > 1000) {
+
+            if (i >= 1 && i < 4) {
+                //Serial.println("Short word");
+                word1++;
+            } else if (i >= 4 && i < 10) {
+                //Serial.println("Long word");
+                word2++;
+            }
+
+            i = 0;
+            lastCheck = millis();
+            soundCheck++;
+        }
+
+        // Send to Pi after 7 secs
+        if (soundCheck > 6) {
+
+            Serial.print(word1);
+            Serial.print(",");
+            Serial.println(word2);
+            word1 = 0;
+            word2 = 0;
+        }
+    }
+    // End of Start Voice Detection
+}
