@@ -100,7 +100,7 @@ def en():
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
-        if(total =>2):
+        if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
             break
@@ -119,7 +119,7 @@ def bm():
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
-        if(total =>2):
+        if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
             break
