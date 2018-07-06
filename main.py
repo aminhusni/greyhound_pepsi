@@ -65,16 +65,16 @@ def seeking():
 
         if(videovar=="phrase1bm"):
             print("video set to phrase1bm")
-            starttime=0
-            duration=19
+            starttime=56
+            duration=86
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1bm",endtime)
 
         if(videovar=="dispense"):
             print("video set to dispense")
-            starttime=0
-            duration=19
+            starttime=41
+            duration=55
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
@@ -92,6 +92,7 @@ def mainseries():
         mainseriesblock.clear()
 
 def en():
+    print("English Mode entered")
     global videovar
     videovar = "phrase1en"
     sleep(10)
