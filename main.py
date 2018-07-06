@@ -18,9 +18,9 @@ FULL=Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1=OMXPlayer(FULL,args=["--orientation","90","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
 
-bmbutton = tk.Button(win, text="BM", font=myFont, command='', height=90, width=90)
-bmbutton.grid(row=1, column=2, sticky=tk.NSEW)
-enbutton = tk.Button(win, text="EN", font=myFont, command='', height=90, width=90)
+bmbutton = tk.Button(win, text="BM", font=myFont, command='', height=10, width=10)
+bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
+enbutton = tk.Button(win, text="EN", font=myFont, command='', height=10, width=10)
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
 
 

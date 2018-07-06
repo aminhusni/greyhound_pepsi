@@ -1,0 +1,41 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "37512358c2bb5d7d4a10b124dea5f7e37415d012704813795d512b7b0a169a70"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.5"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "decorator": {
+            "hashes": [
+                "sha256:2c51dff8ef3c447388fe5e4453d24a2bf128d3a4c32af3fabef1f01c6851ab82",
+                "sha256:c39efa13fbdeb4506c476c9b3babf6a718da943dab7811c206005a4a956c080c"
+            ],
+            "version": "==4.3.0"
+        },
+        "evento": {
+            "hashes": [
+                "sha256:2644a88e4e0a395f0d372ce0b5627506cb29547788bdd97e8fb2240dfe341b13"
+            ],
+            "version": "==1.0.1"
+        },
+        "omxplayer-wrapper": {
+            "hashes": [
+                "sha256:33bdf94d105246546c0e795c54ce22679e94f4f532b6e2102026b16501bb05ab"
+            ],
+            "index": "pypi",
+            "version": "==0.2.5"
+        }
+    },
+    "develop": {}
+}
