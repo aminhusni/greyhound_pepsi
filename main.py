@@ -8,7 +8,7 @@ from time import sleep
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-#win.attributes("-fullscreen", True)
+win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
@@ -49,7 +49,7 @@ def seeking():
         if(videovar=="language"):
             print("video set to language")
             starttime=0
-            duration=19
+            duration=9
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"language",endtime)
@@ -57,7 +57,7 @@ def seeking():
         if(videovar=="phrase1en"):
             print("video set to phrase1en")
             starttime=11
-            duration=40
+            duration=28
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1en",endtime)
@@ -66,7 +66,7 @@ def seeking():
         if(videovar=="phrase1bm"):
             print("video set to phrase1bm")
             starttime=56
-            duration=86
+            duration=20
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1bm",endtime)
@@ -74,7 +74,7 @@ def seeking():
         if(videovar=="dispense"):
             print("video set to dispense")
             starttime=41
-            duration=55
+            duration=11
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
@@ -96,26 +96,32 @@ def en():
     global videovar
     videovar = "phrase1en"
     sleep(10)
-    while(suc == 0):
+    while(True):
+        print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
+        print("Total was "+str(total))
         if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
+            sleep(9)
             break
         attempts =+ 1
-        if(attempts == 3):
+        if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
+            sleep(9)
+    sleep(2)
+    attempts = 0
     mainseriesblock.set()
 
 def bm():
     global videovar
     videovar = "phrase1bm"
     sleep(10)
-    while(suc == 0):
+    while(True):
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
@@ -128,6 +134,7 @@ def bm():
         if(attempts == 3):
             arduino.write(b'd')
             videovar = "dispense"
+            break
     mainseriesblock.set()
 
 
@@ -135,13 +142,14 @@ def bm():
 mainseriesblock=threading.Event()
 
 threadseeking = threading.Thread(target=seeking)
+threadmainseries=threading.Thread(target=mainseries)
 
-
-bmbutton = tk.Button(win, text="BM", font=myFont, command=en, height=10, width=10)
+bmbutton = tk.Button(win, text="BM", font=myFont, command=bm, height=80, width=105)
 bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
-enbutton = tk.Button(win, text="EN", font=myFont, command=bm, height=10, width=10)
+enbutton = tk.Button(win, text="EN", font=myFont, command=en, height=80, width=105)
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
 
 if __name__ == '__main__':
+    threadmainseries.start()
     threadseeking.start()
     win.mainloop()
