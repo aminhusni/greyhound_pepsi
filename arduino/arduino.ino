@@ -37,8 +37,14 @@ void setup() {
 
 void loop() {
 
-voicecheck();
-delay(5000);
+    command = Serial.read();
+    if (command == 'v') {
+        voicecheck();
+    }
+    if (command == 'd') {
+        dispense();
+    }
+    delay(50);
 
 } 
 
@@ -83,6 +89,9 @@ void voicecheck(){
 
         // Send to Pi after 7 secs
         if (soundCheck > 6) {
+
+            Serial.println(word1);
+            Serial.println(word2);
 
 //            Serial.print(word1);
 //            Serial.print(",");
