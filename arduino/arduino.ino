@@ -19,12 +19,14 @@ unsigned int failed;
 
 #define RED 9
 #define GRN 10
+#define SERVO 11
+#define MIC A4
 
 void setup() {
     Serial.begin(9600);
 
-    // Servo attached is pin11
-    myservo.attach(11);
+    // Servo attached is servo
+    myservo.attach(SERVO);
 
     // Move servo a bit to indicate servo is working
     myservo.write(0);

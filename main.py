@@ -118,23 +118,29 @@ def en():
     mainseriesblock.set()
 
 def bm():
+    print("BM Mode entered")
     global videovar
     videovar = "phrase1bm"
     sleep(10)
     while(True):
+        print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
+        print("Total was "+str(total))
         if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
+            sleep(9)
             break
         attempts =+ 1
-        if(attempts == 3):
+        if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
-            break
+            sleep(9)
+    sleep(2)
+    attempts = 0
     mainseriesblock.set()
 
 
