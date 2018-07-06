@@ -18,10 +18,7 @@ FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1 = OMXPlayer(FULL,args=["--orientation","90","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
 
-bmbutton = tk.Button(win, text="BM", font=myFont, command=en, height=10, width=10)
-bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
-enbutton = tk.Button(win, text="EN", font=myFont, command=bm, height=10, width=10)
-enbutton.grid(row=1, column=2, sticky=tk.NSEW)
+
 
 
 def looper(starttime,videoname,endtime):
@@ -138,6 +135,11 @@ mainseriesblock=threading.Event()
 
 threadseeking = threading.Thread(target=seeking)
 
+
+bmbutton = tk.Button(win, text="BM", font=myFont, command=en, height=10, width=10)
+bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
+enbutton = tk.Button(win, text="EN", font=myFont, command=bm, height=10, width=10)
+enbutton.grid(row=1, column=2, sticky=tk.NSEW)
 
 if __name__ == '__main__':
     threadseeking.start()
