@@ -8,7 +8,7 @@ from time import sleep
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-win.attributes("-fullscreen", True)
+#win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
@@ -109,6 +109,7 @@ def mainseries():
 def en():
     print("English Mode entered")
     global videovar
+    attempts = 0
     videovar = "phrase1en"
     sleep(10)
     while(True):
@@ -140,6 +141,7 @@ def en():
 def bm():
     print("BM Mode entered")
     global videovar
+    attempts = 0
     videovar = "phrase1bm"
     sleep(10)
     while(True):
