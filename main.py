@@ -115,6 +115,8 @@ def en():
     while(True):
         if(attempts >=1):
             videovar = "failen"
+            sleep(4)
+            videovar = "phrase1en"
         print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
@@ -144,6 +146,8 @@ def bm():
     while(True):
         if(attempts >=1):
             videovar = "failbm"
+            sleep(4)
+            videovar = "phrase1bm"
         print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
