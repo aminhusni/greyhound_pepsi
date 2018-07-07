@@ -17,10 +17,6 @@ videovar = "null" #Determines the video playing
 FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1 = OMXPlayer(FULL,args=["--orientation","90","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
-
-
-
-
 def looper(starttime,videoname,endtime):
     print("Looper active")
     print("Video name: "+videoname)
@@ -129,6 +125,7 @@ def en():
             sleep(9)
             break
         attempts =+ 1
+        print("Attempt: "+str(attempts))
         if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
@@ -160,6 +157,7 @@ def bm():
             sleep(9)
             break
         attempts =+ 1
+        print("Attempt: "+str(attempts))
         if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
