@@ -64,8 +64,8 @@ def seeking():
             looper(starttime,"phrase2en",endtime)
 
         if(videovar=="phrase1bm"):
-            starttime=60
-            duration=6
+            starttime=59
+            duration=7
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1bm",endtime)
@@ -127,7 +127,7 @@ def bm():
     global videovar
     attempts = 0
     videovar = "phrase1en"
-    sleep(6)
+    sleep(7)
     videovar = "phrase2en"
     while(True):
         print("Waiting for sound... ")
