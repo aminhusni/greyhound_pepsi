@@ -57,16 +57,15 @@ def seeking():
         if(videovar=="phrase1en"):
             print("video set to phrase1en")
             starttime=11
-            duration=28
+            duration=19
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1en",endtime)
 
-
         if(videovar=="phrase1bm"):
             print("video set to phrase1bm")
             starttime=56
-            duration=20
+            duration=21
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1bm",endtime)
@@ -78,6 +77,22 @@ def seeking():
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
+            
+        if(videovar=="failen"):
+            print("video set to failen")
+            starttime=32
+            duration=5
+            player1.set_position(starttime)
+            endtime=starttime+duration
+            looper(starttime,"failen",endtime)
+
+        if(videovar=="failbm"):
+            print("video set to failbm")
+            starttime=78
+            duration=4
+            player1.set_position(starttime)
+            endtime=starttime+duration
+            looper(starttime,"failbm",endtime)
 
 
 
@@ -97,6 +112,8 @@ def en():
     videovar = "phrase1en"
     sleep(10)
     while(True):
+        if(attempts >=1):
+            videovar = "failen"
         print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
@@ -112,8 +129,11 @@ def en():
         if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
-            sleep(9)
-    sleep(2)
+            sleep(10)
+            break
+        videovar = "tryagain"
+
+        
     attempts = 0
     mainseriesblock.set()
 
@@ -123,6 +143,8 @@ def bm():
     videovar = "phrase1bm"
     sleep(10)
     while(True):
+        if(attempts >=1):
+            videovar = "failbm"
         print("loop entered")
         arduino.write(b'v')
         val1 = arduino.readline()
@@ -138,8 +160,8 @@ def bm():
         if(attempts >= 3):
             arduino.write(b'd')
             videovar = "dispense"
-            sleep(9)
-    sleep(2)
+            sleep(10)
+            break
     attempts = 0
     mainseriesblock.set()
 

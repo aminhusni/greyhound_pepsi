@@ -18,6 +18,7 @@ unsigned int passed;
 unsigned int failed;
 char command = 0;
 
+
 #define RED 9
 #define GRN 10
 #define SERVO 11
