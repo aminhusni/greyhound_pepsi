@@ -26,7 +26,7 @@ def looper(starttime,videoname,endtime):
         sleep(0.01)
         currentvidtime=player1.position()
         if(currentvidtime>=endtime):
-            print("Relooping back to:"+str(starttime))
+#            print("Relooping back to:"+str(starttime))
             player1.set_position(starttime)
         if(videoname!=videovar):
             print("Video changed!")
@@ -39,7 +39,7 @@ def seeking():
     print(videovar)
     while(True):
         sleep(1)
-        print("From seeking thread:")
+#        print("From seeking thread:")
         print(videovar)
 
         if(videovar=="language"):
@@ -60,7 +60,7 @@ def seeking():
 
         if(videovar=="phrase1bm"):
             print("video set to phrase1bm")
-            starttime=56
+            starttime=55
             duration=21
             player1.set_position(starttime)
             endtime=starttime+duration
@@ -113,12 +113,12 @@ def en():
             videovar = "failen"
             sleep(4)
             videovar = "phrase1en"
-        print("loop entered")
+        print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
-        print("Total was "+str(total))
+        print("Total DETECTED was "+str(total))
         if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
@@ -145,7 +145,7 @@ def bm():
             videovar = "failbm"
             sleep(4)
             videovar = "phrase1bm"
-        print("loop entered")
+        print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
