@@ -111,7 +111,7 @@ def en():
     global videovar
     attempts = 0
     videovar = "phrase1en"
-    sleep(10)
+    sleep(14)
     while(True):
         if(attempts >=1):
             videovar = "failen"
@@ -132,9 +132,6 @@ def en():
             videovar = "dispense"
             sleep(10)
             break
-        videovar = "tryagain"
-
-        
     attempts = 0
     mainseriesblock.set()
 
@@ -143,7 +140,7 @@ def bm():
     global videovar
     attempts = 0
     videovar = "phrase1bm"
-    sleep(10)
+    sleep(14)
     while(True):
         if(attempts >=1):
             videovar = "failbm"
