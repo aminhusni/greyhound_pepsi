@@ -43,7 +43,6 @@ def seeking():
         print(videovar)
 
         if(videovar=="language"):
-            print("video set to language")
             starttime=0
             duration=9
             player1.set_position(starttime)
@@ -51,48 +50,40 @@ def seeking():
             looper(starttime,"language",endtime)
     
         if(videovar=="phrase1en"):
-            print("video set to phrase1en")
-            starttime=11
-            duration=19
+            starttime=12
+            duration=10
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1en",endtime)
 
+        if(videovar=="phrase2en"):
+            starttime=23
+            duration=17
+            player1.set_position(starttime)
+            endtime=starttime+duration
+            looper(starttime,"phrase2en",endtime)
+
         if(videovar=="phrase1bm"):
-            print("video set to phrase1bm")
-            starttime=55
-            duration=21
+            starttime=60
+            duration=6
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase1bm",endtime)
 
+        if(videovar=="phrase2bm"):
+            starttime=68
+            duration=18
+            player1.set_position(starttime)
+            endtime=starttime+duration
+            looper(starttime,"phrase2bm",endtime)
+
         if(videovar=="dispense"):
-            print("video set to dispense")
             starttime=41
             duration=11
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
             
-        if(videovar=="failen"):
-            print("video set to failen")
-            starttime=32
-            duration=5
-            player1.set_position(starttime)
-            endtime=starttime+duration
-            looper(starttime,"failen",endtime)
-
-        if(videovar=="failbm"):
-            print("video set to failbm")
-            starttime=78
-            duration=4
-            player1.set_position(starttime)
-            endtime=starttime+duration
-            looper(starttime,"failbm",endtime)
-
-
-
-
 
 
 def mainseries():
@@ -107,12 +98,9 @@ def en():
     global videovar
     attempts = 0
     videovar = "phrase1en"
-    sleep(14)
+    sleep(10)
+    videovar = "phrase2en"
     while(True):
-        if(attempts >=1):
-            videovar = "failen"
-            sleep(4)
-            videovar = "phrase1en"
         print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
@@ -138,19 +126,16 @@ def bm():
     print("BM Mode entered")
     global videovar
     attempts = 0
-    videovar = "phrase1bm"
-    sleep(14)
+    videovar = "phrase1en"
+    sleep(6)
+    videovar = "phrase2en"
     while(True):
-        if(attempts >=1):
-            videovar = "failbm"
-            sleep(4)
-            videovar = "phrase1bm"
         print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
-        print("Total was "+str(total))
+        print("Total DETECTED was "+str(total))
         if(total >= 2):
             arduino.write(b'd')
             videovar = "dispense"
