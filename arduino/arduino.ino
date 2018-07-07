@@ -65,7 +65,7 @@ void voicecheck(){
 
     soundCheck = 0;
     // Beginning of Start Voice Detection
-    while(soundCheck < 7){
+    while(soundCheck < 10){
         // read the input on analog pin 0:
         int sensor = analogRead(A4);
         int sound = sensor - 400;
@@ -92,7 +92,7 @@ void voicecheck(){
         }
 
         // Send to Pi after 7 secs
-        if (soundCheck > 6) {
+        if (soundCheck > 9) {
 
             Serial.println(word1);
             Serial.println(word2);
