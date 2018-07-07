@@ -72,7 +72,7 @@ def seeking():
 
         if(videovar=="phrase2bm"):
             starttime=68
-            duration=18
+            duration=16
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase2bm",endtime)
@@ -126,9 +126,9 @@ def bm():
     print("BM Mode entered")
     global videovar
     attempts = 0
-    videovar = "phrase1en"
+    videovar = "phrase1bm"
     sleep(6)
-    videovar = "phrase2en"
+    videovar = "phrase2bm"
     while(True):
         print("Waiting for sound... ")
         arduino.write(b'v')
