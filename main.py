@@ -109,18 +109,18 @@ def en():
         print("Total DETECTED was "+str(total))
         if(total >= 2):
             videovar = "dispense"
-            sleep(7)
+            sleep(10)
             arduino.write(b'd')
-            sleep(4)
+            sleep(1)
             break
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
             sleep(3)
             videovar = "dispense"
-            sleep(7)
+            sleep(10)
             arduino.write(b'd')
-            sleep(4)
+            sleep(1)
             break
     attempts = 0
     mainseriesblock.set()
@@ -141,18 +141,18 @@ def bm():
         print("Total DETECTED was "+str(total))
         if(total >= 2):
             videovar = "dispense"
-            sleep(7)
+            sleep(10)
             arduino.write(b'd')
-            sleep(4)
+            sleep(1)
             break
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
             sleep(5)
             videovar = "dispense"
-            sleep(7)
+            sleep(10)
             arduino.write(b'd')
-            sleep(4)
+            sleep(1)
             break
     attempts = 0
     mainseriesblock.set()
