@@ -79,7 +79,7 @@ def seeking():
 
         if(videovar=="dispense"):
             starttime=41
-            duration=11
+            duration=12
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
@@ -115,9 +115,10 @@ def en():
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
+            sleep(4)
             arduino.write(b'd')
             videovar = "dispense"
-            sleep(10)
+            sleep(11)
             break
     attempts = 0
     mainseriesblock.set()
@@ -126,9 +127,9 @@ def bm():
     print("BM Mode entered")
     global videovar
     attempts = 0
-    videovar = "phrase1en"
+    videovar = "phrase1bm"
     sleep(7)
-    videovar = "phrase2en"
+    videovar = "phrase2bm"
     while(True):
         print("Waiting for sound... ")
         arduino.write(b'v')
@@ -144,9 +145,10 @@ def bm():
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
+            sleep(5)
             arduino.write(b'd')
             videovar = "dispense"
-            sleep(10)
+            sleep(11)
             break
     attempts = 0
     mainseriesblock.set()
