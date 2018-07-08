@@ -148,7 +148,7 @@ def bm():
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
-            sleep(12)
+            sleep(15)
             videovar = "dispense"
             sleep(9.5)
             arduino.write(b'd')
