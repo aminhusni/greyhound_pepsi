@@ -116,7 +116,7 @@ def en():
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
-            sleep(14)
+            sleep(5)
             videovar = "dispense"
             sleep(9.5)
             arduino.write(b'd')
@@ -148,7 +148,7 @@ def bm():
         attempts += 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
-            sleep(16)
+            sleep(15.5)
             videovar = "dispense"
             sleep(9.5)
             arduino.write(b'd')
