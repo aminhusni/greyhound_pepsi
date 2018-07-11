@@ -184,6 +184,7 @@ def en():
         detectEN()
         print(detectionflag)
         if(detectionflag == "Detected"):
+            sleep(2)
             videovar = "dispense"
             sleep(12.5)
             print("DISPENSED")
