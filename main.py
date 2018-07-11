@@ -55,13 +55,17 @@ FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
 def detectBM():
+    print("--------------------SPAM-------------------")
     detectorBM.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    print("--------------------SPAM-------------------")
 
 def stopBM():
     detectorBM.terminate()
 
 def detectEN():
+    print("--------------------SPAM-------------------")
     detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    print("--------------------SPAM-------------------")
 
 def stopEN():
     detectorEN.terminate()
@@ -73,6 +77,7 @@ def timeout():
         print("Timeout flag started")
         global detectionflag
         sleep(DETECT_TIMEOUT)
+        print("Timeout Ended")
         if(detectionflag == "None"):
             detectionflag = "Timeout"
             try:
