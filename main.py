@@ -61,6 +61,7 @@ def detectBM():
 
 def stopBM():
     detectorBM.terminate()
+    print("BM Listen Stopped")
 
 def detectEN():
     print("--------------------SPAM-------------------")
@@ -69,6 +70,7 @@ def detectEN():
 
 def stopEN():
     detectorEN.terminate()
+    print("EN Listen Stopped")
 
 def timeout():
     while(True):
@@ -178,11 +180,11 @@ def en():
     while(attempts < 4):
         print(".........")
         if(attempts >= 1):
-            sleep(3)
+            sleep(3.5)
         print("Waiting for sound... ")
-        timeoutflag.set()
-        detectEN()
-        print(detectionflag)
+        timeoutflag.set() 
+        detectEN()  #Blocking
+        print("DETECTION FLAG: " + detectionflag)
         if(detectionflag == "Detected"):
             sleep(2)
             videovar = "dispense"
