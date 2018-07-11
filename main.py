@@ -251,7 +251,6 @@ if __name__ == '__main__':
     threadtimeout.start()
     threadmainseries.start()
     threadseeking.start()
-    threadtimeout.start()
     win.mainloop()
     stopEN()
     stopBM()
