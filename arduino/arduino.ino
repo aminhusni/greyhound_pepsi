@@ -67,16 +67,16 @@ void voicecheck(){
     // Beginning of Start Voice Detection
     while(soundCheck < 10){
         // read the input on analog pin 0:
-        int sensor = analogRead(A4);
+        int sensor = analogRead(A0);
         int sound = sensor - 400;
 
         //Peak detection
-        if (sound < 90 || sound > 120) {
-            i++;
+        if (sound < 100 || sound > 140) {
+            i++; 
         }
         delay(50);
 
-        while (millis() - lastCheck > 1000) {
+        while (millis() - lastCheck > 900) {
 
             if (i >= 1 && i < 4) {
                 //Serial.println("Short word");
@@ -102,6 +102,7 @@ void voicecheck(){
 //            Serial.println(word2);
             word1 = 0;
             word2 = 0;
+            delay(1000);
         }
     }
     // End of Start Voice Detection

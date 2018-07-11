@@ -8,10 +8,11 @@ from time import sleep
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-#win.attributes("-fullscreen", True)
+win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
+PEAK = 2
 videovar = "null" #Determines the video playing
 
 FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
@@ -79,7 +80,7 @@ def seeking():
 
         if(videovar=="dispense"):
             starttime=41
-            duration=12
+            duration=14
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
@@ -100,27 +101,36 @@ def en():
     videovar = "phrase1en"
     sleep(10)
     videovar = "phrase2en"
+    PEAK = 2
     while(True):
+        print(".........")
+        if(attempts >= 1):
+            sleep(2)
         print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
         print("Total DETECTED was "+str(total))
-        if(total >= 2):
+        if(total >= PEAK):
             videovar = "dispense"
-            sleep(9.5)
+            sleep(12.5)
+            print("DISPENSED")
             arduino.write(b'd')
-            sleep(1.5)
+            sleep(1)
+            break
             break
         attempts += 1
+        PEAK = 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
             sleep(3)
             videovar = "dispense"
-            sleep(9.5)
+            sleep(12.5)
+            print("DISPENSED")
             arduino.write(b'd')
-            sleep(1.5)
+            sleep(1)
+            break
             break
     attempts = 0
     mainseriesblock.set()
@@ -132,27 +142,34 @@ def bm():
     videovar = "phrase1bm"
     sleep(7)
     videovar = "phrase2bm"
+    PEAK = 2
     while(True):
+        print("......")
+        if(attempts >= 1):
+            sleep(6)
         print("Waiting for sound... ")
         arduino.write(b'v')
         val1 = arduino.readline()
         val2 = arduino.readline()
         total = int(val1) + int(val2)
         print("Total DETECTED was "+str(total))
-        if(total >= 2):
+        if(total >= PEAK):
             videovar = "dispense"
-            sleep(9.5)
+            sleep(14)
+            print("DISPENSED")
             arduino.write(b'd')
-            sleep(1.5)
+            sleep(1)
             break
         attempts += 1
+        PEAK = 1
         print("Attempt: "+str(attempts))
         if(attempts >= 3):
-            sleep(15)
+            sleep(15.5)
             videovar = "dispense"
-            sleep(9.5)
+            sleep(14)
+            print("DISPENSED")
             arduino.write(b'd')
-            sleep(1.5)
+            sleep(1)
             break
     attempts = 0
     mainseriesblock.set()
