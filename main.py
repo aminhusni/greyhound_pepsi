@@ -5,10 +5,38 @@ import serial
 from omxplayer.player import OMXPlayer
 from pathlib import Path
 from time import sleep
+import snowboydecoder
+import sys
+import signal
+
+DETECT_TIMEOUT = 8
+interrupted = False
+
+def signal_handler(signal, frame):
+    global interrupted
+    interrupted = True
+
+def interrupt_callback():
+    global interrupted
+    return interrupted
+
+def gotdetect():
+    global detectionflag
+    detectionflag =  "Detected"
+
+MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
+MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
+
+signal.signal(signal.SIGINT, signal_handler)
+
+detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
+detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
+
+detectionflag = "None"
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-win.attributes("-fullscreen", True)
+#win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
@@ -16,7 +44,28 @@ PEAK = 2
 videovar = "null" #Determines the video playing
 
 FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
-player1 = OMXPlayer(FULL,args=["--orientation","90","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
+player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
+
+def detectBM():
+    detectorBM.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+
+def stopBM():
+    detectorBM.terminate()
+
+def detectEN():
+    detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+
+def stopEN():
+    detectorEN.terminate()
+
+def timeout():
+    while(True):
+        timeoutflag.wait()
+        timeoutflag.clear()
+        global detectionflag
+        sleep(DETECT_TIMEOUT)
+        if(detectionflag == "None"):
+            detectionflag = "Timeout"
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
@@ -93,7 +142,7 @@ def mainseries():
         videovar = "language"
         mainseriesblock.wait() 
         mainseriesblock.clear()
-
+ 
 def en():
     print("English Mode entered")
     global videovar
@@ -101,17 +150,21 @@ def en():
     videovar = "phrase1en"
     sleep(10)
     videovar = "phrase2en"
+    print("ENGLISH STARTED")
     PEAK = 2
     while(True):
         print(".........")
         if(attempts >= 1):
             sleep(2)
         print("Waiting for sound... ")
-        arduino.write(b'v')
-        val1 = arduino.readline()
-        val2 = arduino.readline()
-        total = int(val1) + int(val2)
-        print("Total DETECTED was "+str(total))
+        timeoutflag.set()
+        while( detectionflag == "None"):
+            if( detectionflag == "Timeout"):
+                break
+       
+
+
+
         if(total >= PEAK):
             videovar = "dispense"
             sleep(12.5)
@@ -177,9 +230,11 @@ def bm():
 
 
 mainseriesblock=threading.Event()
+timeoutflag=threading.Event()
 
 threadseeking = threading.Thread(target=seeking)
 threadmainseries=threading.Thread(target=mainseries)
+threadtimeout = threading.Thread(target=timeout)
 
 bmbutton = tk.Button(win, text="BM", font=myFont, command=bm, height=80, width=105)
 bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
@@ -187,6 +242,9 @@ enbutton = tk.Button(win, text="EN", font=myFont, command=en, height=80, width=1
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
 
 if __name__ == '__main__':
+    threadtimeout.start()
     threadmainseries.start()
     threadseeking.start()
     win.mainloop()
+    stopEN()
+    stopBM()
