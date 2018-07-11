@@ -145,8 +145,8 @@ def seeking():
             looper(starttime,"phrase1bm",endtime)
 
         if(videovar=="phrase2bm"):
-            starttime=69
-            duration=15
+            starttime=70
+            duration=16
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"phrase2bm",endtime)
