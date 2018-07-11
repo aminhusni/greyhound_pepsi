@@ -193,6 +193,8 @@ def en():
             arduino.write(b'd')
             sleep(1)
             break
+        if(detectionflag == "Timeout"):
+            detectionflag = "None"
         attempts += 1
         print("Attempt: "+str(attempts))
     detectionflag = "None"
