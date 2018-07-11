@@ -23,6 +23,14 @@ def interrupt_callback():
 def gotdetect():
     global detectionflag
     detectionflag =  "Detected"
+    try:
+        stopEN()
+    except:
+        pass
+    try:
+        stopBM()
+    except:
+        pass
 
 MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
@@ -66,6 +74,14 @@ def timeout():
         sleep(DETECT_TIMEOUT)
         if(detectionflag == "None"):
             detectionflag = "Timeout"
+            try:
+                stopEN()
+            except:
+                pass
+            try:
+                stopBM()
+            except:
+                pass
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
@@ -144,6 +160,7 @@ def mainseries():
         mainseriesblock.clear()
  
 def en():
+    global detectionflag
     print("English Mode entered")
     global videovar
     attempts = 0
@@ -158,14 +175,9 @@ def en():
             sleep(2)
         print("Waiting for sound... ")
         timeoutflag.set()
-        while( detectionflag == "None"):
-            if( detectionflag == "Timeout"):
-                break
-       
-
-
-
-        if(total >= PEAK):
+        detectEN()
+        print(detectionflag)
+        if(detectionflag == "Detected"):
             videovar = "dispense"
             sleep(12.5)
             print("DISPENSED")
@@ -176,19 +188,12 @@ def en():
         attempts += 1
         PEAK = 1
         print("Attempt: "+str(attempts))
-        if(attempts >= 3):
-            sleep(3)
-            videovar = "dispense"
-            sleep(12.5)
-            print("DISPENSED")
-            arduino.write(b'd')
-            sleep(1)
-            break
-            break
+    detectionflag = "None"
     attempts = 0
     mainseriesblock.set()
 
 def bm():
+    global detectionflag
     print("BM Mode entered")
     global videovar
     attempts = 0
