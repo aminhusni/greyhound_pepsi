@@ -212,7 +212,7 @@ def bm():
     while(attempts < 3):
         print(".........")
         if(attempts >= 1):
-            sleep(6)
+            sleep(8.5)
         print("Waiting for sound... ")
         timeoutflag.set() 
         detectBM()  #Blocking
