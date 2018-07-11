@@ -70,6 +70,7 @@ def timeout():
     while(True):
         timeoutflag.wait()
         timeoutflag.clear()
+        print("Timeout flag started")
         global detectionflag
         sleep(DETECT_TIMEOUT)
         if(detectionflag == "None"):
@@ -250,6 +251,7 @@ if __name__ == '__main__':
     threadtimeout.start()
     threadmainseries.start()
     threadseeking.start()
+    threadtimeout.start()
     win.mainloop()
     stopEN()
     stopBM()
