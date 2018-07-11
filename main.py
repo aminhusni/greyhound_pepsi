@@ -175,10 +175,10 @@ def en():
     videovar = "phrase2en"
     print("ENGLISH STARTED")
     PEAK = 2
-    while(True):
+    while(attempts < 4):
         print(".........")
         if(attempts >= 1):
-            sleep(2)
+            sleep(3)
         print("Waiting for sound... ")
         timeoutflag.set()
         detectEN()
@@ -191,11 +191,7 @@ def en():
             arduino.write(b'd')
             sleep(1)
             break
-            break
-        if(detectionflag == "Timeout"):
-            break
         attempts += 1
-        PEAK = 1
         print("Attempt: "+str(attempts))
     detectionflag = "None"
     attempts = 0
