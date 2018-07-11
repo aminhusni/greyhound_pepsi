@@ -191,6 +191,8 @@ def en():
             sleep(1)
             break
             break
+        if(detectionflag == "Timeout"):
+            break
         attempts += 1
         PEAK = 1
         print("Attempt: "+str(attempts))
