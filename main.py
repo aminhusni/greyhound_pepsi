@@ -20,25 +20,37 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
+def trystopEN():
+    try:
+        stopEN()
+        print("English stop success")
+    except:
+        pass
+
+def trystopBM():
+    try:
+        stopBM()
+        print("BM stop success")
+    except:
+        pass
+
+
 def gotdetect():
     global detectionflag
     detectionflag =  "Detected"
-    try:
-        stopEN()
-    except:
-        pass
-    try:
-        stopBM()
-    except:
-        pass
+    trystopEN()
+    trystopBM()
+    trystopEN()
+    trystopBM()
 
 MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 
 signal.signal(signal.SIGINT, signal_handler)
 
-detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
 detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.5)
+detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.7)
+
 
 detectionflag = "None"
 
@@ -55,18 +67,18 @@ FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
 def detectBM():
-    print("--------------------SPAM-------------------")
+    print("--------------------SPAM BM STARTED-------------------")
     detectorBM.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
-    print("--------------------SPAM-------------------")
+    print("--------------------SPAM BM ENDED-------------------")
+
+def detectEN():
+    print("--------------------SPAM EN STARTED------------------")
+    detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    print("------------------- SPAM EN ENDED-----------------------")
 
 def stopBM():
     detectorBM.terminate()
     print("BM Listen Stopped")
-
-def detectEN():
-    print("--------------------SPAM-------------------")
-    detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
-    print("--------------------SPAM-------------------")
 
 def stopEN():
     detectorEN.terminate()
@@ -82,14 +94,8 @@ def timeout():
         print("Timeout Ended")
         if(detectionflag == "None"):
             detectionflag = "Timeout"
-            try:
-                stopEN()
-            except:
-                pass
-            try:
-                stopBM()
-            except:
-                pass
+            trystopEN()
+            trystopBM()
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
@@ -100,7 +106,6 @@ def looper(starttime,videoname,endtime):
         sleep(0.01)
         currentvidtime=player1.position()
         if(currentvidtime>=endtime):
-#            print("Relooping back to:"+str(starttime))
             player1.set_position(starttime)
         if(videoname!=videovar):
             print("Video changed!")
@@ -113,7 +118,6 @@ def seeking():
     print(videovar)
     while(True):
         sleep(1)
-#        print("From seeking thread:")
         print(videovar)
 
         if(videovar=="language"):
@@ -164,10 +168,11 @@ def mainseries():
     global videovar
     while(True):
         videovar = "language"
-        mainseriesblock.wait() 
+        mainseriesblock.wait()
         mainseriesblock.clear()
  
 def en():
+    trystopEN()
     global detectionflag
     print("English Mode entered")
     global videovar
@@ -181,7 +186,7 @@ def en():
         if(attempts >= 1):
             sleep(3.5)
         print("Waiting for sound... ")
-        timeoutflag.set() 
+        timeoutflag.set()
         detectEN()  #Blocking
         print("DETECTION FLAG: " + detectionflag)
         if(detectionflag == "Detected"):
@@ -198,15 +203,19 @@ def en():
         print("Attempt: "+str(attempts))
     detectionflag = "None"
     attempts = 0
+    trystopEN()
     mainseriesblock.set()
 
+
 def bm():
+    trystopBM()
+    trystopEN()
     global detectionflag
     print("BM Mode entered")
     global videovar
     attempts = 0
     videovar = "phrase1bm"
-    sleep(7)
+    sleep(6)
     videovar = "phrase2bm"
     print("BAHASA STARTED")
     while(attempts < 3):
@@ -231,6 +240,7 @@ def bm():
         print("Attempt: "+str(attempts))
     detectionflag = "None"
     attempts = 0
+    trystopBM()
     mainseriesblock.set()
 
 
