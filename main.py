@@ -38,7 +38,7 @@ MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 signal.signal(signal.SIGINT, signal_handler)
 
 detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
-detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
+detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.5)
 
 detectionflag = "None"
 
