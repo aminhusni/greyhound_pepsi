@@ -176,7 +176,6 @@ def en():
     sleep(10)
     videovar = "phrase2en"
     print("ENGLISH STARTED")
-    PEAK = 2
     while(attempts < 3):
         print(".........")
         if(attempts >= 1):
@@ -209,35 +208,28 @@ def bm():
     videovar = "phrase1bm"
     sleep(7)
     videovar = "phrase2bm"
-    PEAK = 2
-    while(True):
-        print("......")
+    print("BAHASA STARTED")
+    while(attempts < 3):
+        print(".........")
         if(attempts >= 1):
             sleep(6)
         print("Waiting for sound... ")
-        arduino.write(b'v')
-        val1 = arduino.readline()
-        val2 = arduino.readline()
-        total = int(val1) + int(val2)
-        print("Total DETECTED was "+str(total))
-        if(total >= PEAK):
+        timeoutflag.set() 
+        detectBM()  #Blocking
+        print("DETECTION FLAG: " + detectionflag)
+        if(detectionflag == "Detected"):
+            sleep(2)
             videovar = "dispense"
             sleep(14)
             print("DISPENSED")
             arduino.write(b'd')
             sleep(1)
             break
+        if(detectionflag == "Timeout"):
+            detectionflag = "None"
         attempts += 1
-        PEAK = 1
         print("Attempt: "+str(attempts))
-        if(attempts >= 3):
-            sleep(15.5)
-            videovar = "dispense"
-            sleep(14)
-            print("DISPENSED")
-            arduino.write(b'd')
-            sleep(1)
-            break
+    detectionflag = "None"
     attempts = 0
     mainseriesblock.set()
 
