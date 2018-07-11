@@ -177,7 +177,7 @@ def en():
     videovar = "phrase2en"
     print("ENGLISH STARTED")
     PEAK = 2
-    while(attempts < 4):
+    while(attempts < 3):
         print(".........")
         if(attempts >= 1):
             sleep(3.5)
