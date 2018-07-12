@@ -81,10 +81,11 @@ def trystop():
         detectorEN.terminate()
     except:
         print("NO ENGLISH THREAD")
-    try:
-        detectorBM.terminate()
-    except:
-        print("NO BM THREAD")
+    finally:
+        try:
+            detectorBM.terminate()
+        except:
+            print("NO BM THREAD")
 
 def timeout():
     global detectionflag
@@ -94,9 +95,10 @@ def timeout():
         print("Timeout flag started")
         sleep(DETECT_TIMEOUT)
         print("Timeout Ended")
+        print("Timeout set since none")
         if(detectionflag == "None"):
-            print("Timeout set since none")
             detectionflag = "Timeout"
+            trystop()
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
@@ -183,6 +185,7 @@ def en():
     videovar = "phrase2en"
     print("ENGLISH STARTED")
     while(attempts < 3):
+        detectionflag = "None"
         print(".........")
         if(attempts >= 1):
             sleep(3.5)
@@ -201,7 +204,6 @@ def en():
         if(detectionflag == "Timeout"):
             print("Timeout detected")
             detectionflag = "None"
-            detectionEN.terminate()
         attempts += 1
         print("Attempt: "+str(attempts))
     detectionflag = "None"
@@ -222,6 +224,7 @@ def bm():
     videovar = "phrase2bm"
     print("BAHASA STARTED")
     while(attempts < 3):
+        detectionflag = "None"
         print(".........")
         if(attempts >= 1):
             sleep(8.5)
@@ -240,7 +243,6 @@ def bm():
         if(detectionflag == "Timeout"):
             print("Timeout detected")
             detectionflag = "None"
-            detectionBM.terminate()
         attempts += 1
         print("Attempt: "+str(attempts))
     detectionflag = "None"
