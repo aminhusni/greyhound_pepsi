@@ -11,6 +11,7 @@ import signal
 
 DETECT_TIMEOUT = 8
 interrupted = False
+interrupted2 = False
 
 def signal_handler(signal, frame):
     global interrupted
@@ -19,6 +20,14 @@ def signal_handler(signal, frame):
 def interrupt_callback():
     global interrupted
     return interrupted
+
+def signal_handler2(signal, frame):
+    global interrupted2
+    interrupted = True
+
+def interrupt_callback2():
+    global interrupted2
+    return interrupted2
 
 def trystopEN():
     try:
@@ -34,7 +43,6 @@ def trystopBM():
     except:
         pass
 
-
 def gotdetect():
     global detectionflag
     detectionflag =  "Detected"
@@ -48,8 +56,8 @@ MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 
 signal.signal(signal.SIGINT, signal_handler)
 
-detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.5)
-detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.7)
+detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
+detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.55)
 
 
 detectionflag = "None"
@@ -73,7 +81,7 @@ def detectBM():
 
 def detectEN():
     print("--------------------SPAM EN STARTED------------------")
-    detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    detectorEN.start(detected_callback=gotdetect2, interrupt_check=interrupt_callback2, sleep_time=0.03)
     print("------------------- SPAM EN ENDED-----------------------")
 
 def stopBM():
@@ -161,8 +169,6 @@ def seeking():
             player1.set_position(starttime)
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
-            
-
 
 def mainseries():
     global videovar
@@ -172,6 +178,7 @@ def mainseries():
         mainseriesblock.clear()
  
 def en():
+    detectionflag = "None"
     trystopEN()
     global detectionflag
     print("English Mode entered")
@@ -208,6 +215,7 @@ def en():
 
 
 def bm():
+    detectionflag = "None"
     trystopBM()
     trystopEN()
     global detectionflag
