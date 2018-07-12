@@ -69,8 +69,6 @@ def detectEN():
     print("------------------- SPAM EN ENDED-----------------------")
     
 def trystop():
-    global interrupted
-    true_terminate()
     try:
         detectorBM.terminate()
     except:
@@ -79,6 +77,9 @@ def trystop():
         detectorEN.terminate()
     except:
         pass
+    global interrupted
+    true_terminate()
+
 
     print("Try stopping done....")
     sleep(1)
