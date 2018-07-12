@@ -23,10 +23,6 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-def signal_handler2(signal, frame):
-    global interrupted2
-    interrupted = True
-
 def interrupt_callback2():
     global interrupted2
     return interrupted2
@@ -53,10 +49,20 @@ def gotdetect():
     trystopEN()
     trystopBM()
 
+def gotdetect2():
+    global detectionflag
+    detectionflag =  "Detected"
+    trystopEN()
+    trystopBM()
+    trystopEN()
+    trystopBM()
+
+
 MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 
 signal.signal(signal.SIGINT, signal_handler)
+
 
 detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
 detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.55)
