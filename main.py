@@ -34,7 +34,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 
 detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
-detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.55)
+detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.)
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
