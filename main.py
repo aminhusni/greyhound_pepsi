@@ -53,11 +53,6 @@ def gotdetect():
     global detectionflag
     detectionflag =  "Detected"
     detectorBM.terminate()
-    
-def gotdetect2():
-    global detectionflag
-    detectionflag =  "Detected"
-    detectorEN.terminate()
 
 def detectBM():
     global interrupted
@@ -70,12 +65,21 @@ def detectEN():
     global interrupted
     interrupted = False
     print("--------------------SPAM EN STARTED------------------")
-    detectorEN.start(detected_callback=gotdetect2, interrupt_check=interrupt_callback, sleep_time=0.03)
+    detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
     print("------------------- SPAM EN ENDED-----------------------")
     
 def trystop():
     global interrupted
     true_terminate()
+    try:
+        detectorBM.terminate()
+    except:
+        pass
+    try:
+        detectorEN.terminate()
+    except:
+        pass
+
     print("Try stopping done....")
     sleep(1)
     interrupted = False
