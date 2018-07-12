@@ -19,13 +19,14 @@ def signal_handler(signal, frame):
     global interrupted
     interrupted = True
 
+def true_terminate():
+    global interrupted
+    interrupted = True
+
 def interrupt_callback():
     global interrupted
     return interrupted
 
-def interrupt_callback2():
-    global interrupted2
-    return interrupted2
 
 MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
@@ -34,7 +35,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 
 detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
-detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.)
+detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
@@ -59,33 +60,25 @@ def gotdetect2():
     detectorEN.terminate()
 
 def detectBM():
+    global interrupted
+    interrupted = False
     print("--------------------SPAM BM STARTED-------------------")
     detectorBM.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
     print("--------------------SPAM BM ENDED-------------------")
 
 def detectEN():
+    global interrupted
+    interrupted = False
     print("--------------------SPAM EN STARTED------------------")
-    detectorEN.start(detected_callback=gotdetect2, interrupt_check=interrupt_callback2, sleep_time=0.03)
+    detectorEN.start(detected_callback=gotdetect2, interrupt_check=interrupt_callback, sleep_time=0.03)
     print("------------------- SPAM EN ENDED-----------------------")
-
-def stopBM():
-    detectorBM.terminate()
-    print("BM Listen Stopped")
-
-def stopEN():
-    detectorEN.terminate()
-    print("EN Listen Stopped")
     
 def trystop():
-    try:
-        detectorEN.terminate()
-    except:
-        print("NO ENGLISH THREAD")
-    finally:
-        try:
-            detectorBM.terminate()
-        except:
-            print("NO BM THREAD")
+    global interrupted
+    true_terminate()
+    print("Try stopping done....")
+    sleep(1)
+    interrupted = False
 
 def timeout():
     global detectionflag
@@ -172,8 +165,7 @@ def mainseries():
         mainseriesblock.wait()
         mainseriesblock.clear()
  
-def en():
-    
+def en():  
     trystop()
     global detectionflag
     detectionflag = "None"
@@ -269,5 +261,4 @@ if __name__ == '__main__':
     threadmainseries.start()
     threadseeking.start()
     win.mainloop()
-    stopEN()
-    stopBM()
+
