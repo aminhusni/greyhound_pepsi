@@ -179,9 +179,10 @@ def mainseries():
         mainseriesblock.clear()
  
 def en():
-    detectionflag = "None"
+    
     trystopEN()
     global detectionflag
+    detectionflag = "None"
     print("English Mode entered")
     global videovar
     attempts = 0
@@ -216,10 +217,11 @@ def en():
 
 
 def bm():
-    detectionflag = "None"
+    
     trystopBM()
     trystopEN()
     global detectionflag
+    detectionflag = "None"
     print("BM Mode entered")
     global videovar
     attempts = 0
