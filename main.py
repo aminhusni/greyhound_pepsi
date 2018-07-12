@@ -12,6 +12,8 @@ import signal
 DETECT_TIMEOUT = 8
 interrupted = False
 interrupted2 = False
+detectionflag = "None"
+
 
 def signal_handler(signal, frame):
     global interrupted
@@ -60,7 +62,6 @@ detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
 detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.55)
 
 
-detectionflag = "None"
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
