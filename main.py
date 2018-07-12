@@ -52,13 +52,14 @@ player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-
 def gotdetect():
     global detectionflag
     detectionflag =  "Detected"
-    detectorBM.terminate()
+    trystop()
 
 def detectBM():
     global interrupted
     interrupted = False
     print("--------------------SPAM BM STARTED-------------------")
     detectorBM.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    detectorBM.terminate()
     print("--------------------SPAM BM ENDED-------------------")
 
 def detectEN():
@@ -66,21 +67,12 @@ def detectEN():
     interrupted = False
     print("--------------------SPAM EN STARTED------------------")
     detectorEN.start(detected_callback=gotdetect, interrupt_check=interrupt_callback, sleep_time=0.03)
+    detectorEN.terminate()
     print("------------------- SPAM EN ENDED-----------------------")
     
 def trystop():
-    try:
-        detectorBM.terminate()
-    except:
-        pass
-    try:
-        detectorEN.terminate()
-    except:
-        pass
     global interrupted
     true_terminate()
-
-
     print("Try stopping done....")
     sleep(1)
     interrupted = False
