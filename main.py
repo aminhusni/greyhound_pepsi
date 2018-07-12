@@ -74,8 +74,7 @@ def trystop():
     global interrupted
     true_terminate()
     print("Try stopping done....")
-    sleep(1)
-    interrupted = False
+
 
 def timeout():
     global detectionflag
