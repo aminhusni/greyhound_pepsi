@@ -27,37 +27,6 @@ def interrupt_callback2():
     global interrupted2
     return interrupted2
 
-def trystopEN():
-    try:
-        stopEN()
-        print("English stop success")
-    except:
-        pass
-
-def trystopBM():
-    try:
-        stopBM()
-        print("BM stop success")
-    except:
-        pass
-
-def gotdetect():
-    global detectionflag
-    detectionflag =  "Detected"
-    trystopEN()
-    trystopBM()
-    trystopEN()
-    trystopBM()
-
-def gotdetect2():
-    global detectionflag
-    detectionflag =  "Detected"
-    trystopEN()
-    trystopBM()
-    trystopEN()
-    trystopBM()
-
-
 MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 
@@ -66,8 +35,6 @@ signal.signal(signal.SIGINT, signal_handler)
 
 detectorEN = snowboydecoder.HotwordDetector(MODEL_EN, sensitivity=0.6)
 detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.55)
-
-
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
@@ -80,6 +47,16 @@ videovar = "null" #Determines the video playing
 
 FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
 player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
+
+def gotdetect():
+    global detectionflag
+    detectionflag =  "Detected"
+    detectorBM.terminate()
+    
+def gotdetect2():
+    global detectionflag
+    detectionflag =  "Detected"
+    detectorEN.terminate()
 
 def detectBM():
     print("--------------------SPAM BM STARTED-------------------")
@@ -98,6 +75,10 @@ def stopBM():
 def stopEN():
     detectorEN.terminate()
     print("EN Listen Stopped")
+    
+def trystop():
+    detectorEN.terminate()
+    detectorBM.terminate()
 
 def timeout():
     while(True):
@@ -109,8 +90,7 @@ def timeout():
         print("Timeout Ended")
         if(detectionflag == "None"):
             detectionflag = "Timeout"
-            trystopEN()
-            trystopBM()
+            trystop()
 
 def looper(starttime,videoname,endtime):
     print("Looper active")
@@ -186,7 +166,7 @@ def mainseries():
  
 def en():
     
-    trystopEN()
+    trystop()
     global detectionflag
     detectionflag = "None"
     print("English Mode entered")
@@ -218,21 +198,19 @@ def en():
         print("Attempt: "+str(attempts))
     detectionflag = "None"
     attempts = 0
-    trystopEN()
+    trystop()
     mainseriesblock.set()
 
 
 def bm():
-    
-    trystopBM()
-    trystopEN()
+    trystop()
     global detectionflag
     detectionflag = "None"
     print("BM Mode entered")
     global videovar
     attempts = 0
     videovar = "phrase1bm"
-    sleep(6)
+    sleep(6.7)
     videovar = "phrase2bm"
     print("BAHASA STARTED")
     while(attempts < 3):
@@ -257,7 +235,7 @@ def bm():
         print("Attempt: "+str(attempts))
     detectionflag = "None"
     attempts = 0
-    trystopBM()
+    trystop()
     mainseriesblock.set()
 
 
