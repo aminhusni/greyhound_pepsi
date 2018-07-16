@@ -9,7 +9,7 @@ import snowboydecoder
 import sys
 import signal
 
-DETECT_TIMEOUT = 6
+DETECT_TIMEOUT = 7
 interrupted = False
 interrupted2 = False
 detectionflag = "None"
@@ -39,7 +39,7 @@ detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-#win.attributes("-fullscreen", True)
+win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
@@ -181,6 +181,8 @@ def en():
     while(True):
         enblock.wait()
         enblock.clear()
+        disableEN()
+        disableBM()
         trystop()
         global detectionflag
         detectionflag = "None"
@@ -195,7 +197,7 @@ def en():
             detectionflag = "None"
             print(".........")
             if(attempts >= 1):
-                sleep(3.5)
+                sleep(5)
             print("Waiting for sound... ")
             timeoutflag.set()
             detectEN()  #Blocking
@@ -223,6 +225,8 @@ def bm():
     while(True):
         bmblock.wait()
         bmblock.clear()
+        disableEN()
+        disableBM()
         trystop()
         global detectionflag
         detectionflag = "None"
@@ -230,14 +234,14 @@ def bm():
         global videovar
         attempts = 0
         videovar = "phrase1bm"
-        sleep(6.7)
+        sleep(8.7)
         videovar = "phrase2bm"
         print("BAHASA STARTED")
         while(attempts < 3):
             detectionflag = "None"
             print(".........")
             if(attempts >= 1):
-                sleep(8.5)
+                sleep(9.5)
             print("Waiting for sound... ")
             timeoutflag.set() 
             detectBM()  #Blocking
@@ -307,13 +311,13 @@ threaden = threading.Thread(target=en)
 threadbm = threading.Thread(target=bm)
 
 
-bmbutton = tk.Button(win, text="BM", font=myFont, command=unblockbm, height=5, width=5)
+bmbutton = tk.Button(win, text="BM", font=myFont, command=unblockbm, height=30, width=85)
 bmbutton.grid(row=2, column=2, sticky=tk.NSEW)
-enbutton = tk.Button(win, text="EN", font=myFont, command=unblocken, height=5, width=5)
+enbutton = tk.Button(win, text="EN", font=myFont, command=unblocken, height=30, width=85)
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
-startbutton = tk.Button(win, text="START", font=myFont, command=unblockstart, height=5, width=5)
+startbutton = tk.Button(win, text="START", font=myFont, command=unblockstart, height=30, width=135)
 startbutton.grid(row=1, column=1, sticky=tk.NSEW)
-startbutton2 = tk.Button(win, text="START", font=myFont, command=unblockstart, height=5, width=5)
+startbutton2 = tk.Button(win, text="START", font=myFont, command=unblockstart, height=30, width=135)
 startbutton2.grid(row=2, column=1, sticky=tk.NSEW)
 
 
