@@ -154,103 +154,157 @@ def seeking():
             endtime=starttime+duration
             looper(starttime,"dispense",endtime)
 
+        if(videovar=="idle"):
+            starttime=91
+            duration=14
+            player1.set_position(starttime)
+            endtime=starttime+duration
+            looper(starttime,"dispense",endtime)
+
 def mainseries():
     global videovar
     while(True):
+        enableStart()
+        disableBM()
+        disableEN()
+        videovar = "idle"
+        startblock.wait()
+        startblock.clear()
+        disableStart()
+        enableBM()
+        enableEN()
         videovar = "language"
         mainseriesblock.wait()
         mainseriesblock.clear()
  
-def en():  
-    trystop()
-    global detectionflag
-    detectionflag = "None"
-    print("English Mode entered")
-    global videovar
-    attempts = 0
-    videovar = "phrase1en"
-    sleep(10)
-    videovar = "phrase2en"
-    print("ENGLISH STARTED")
-    while(attempts < 3):
+def en():
+    while(True):
+        enblock.wait()
+        enblock.clear()
+        trystop()
+        global detectionflag
         detectionflag = "None"
-        print(".........")
-        if(attempts >= 1):
-            sleep(3.5)
-        print("Waiting for sound... ")
-        timeoutflag.set()
-        detectEN()  #Blocking
-        print("DETECTION FLAG: " + detectionflag)
-        if(detectionflag == "Detected"):
-            sleep(2)
-            videovar = "dispense"
-            sleep(12.5)
-            print("DISPENSED")
-            arduino.write(b'd')
-            sleep(1)
-            break
-        if(detectionflag == "Timeout"):
-            print("Timeout detected")
+        print("English Mode entered")
+        global videovar
+        attempts = 0
+        videovar = "phrase1en"
+        sleep(10)
+        videovar = "phrase2en"
+        print("ENGLISH STARTED")
+        while(attempts < 3):
             detectionflag = "None"
-        attempts += 1
-        print("Attempt: "+str(attempts))
-    detectionflag = "None"
-    attempts = 0
-    trystop()
-    mainseriesblock.set()
+            print(".........")
+            if(attempts >= 1):
+                sleep(3.5)
+            print("Waiting for sound... ")
+            timeoutflag.set()
+            detectEN()  #Blocking
+            print("DETECTION FLAG: " + detectionflag)
+            if(detectionflag == "Detected"):
+                sleep(2)
+                videovar = "dispense"
+                sleep(12.5)
+                print("DISPENSED")
+                arduino.write(b'd')
+                sleep(1)
+                break
+            if(detectionflag == "Timeout"):
+                print("Timeout detected")
+                detectionflag = "None"
+            attempts += 1
+            print("Attempt: "+str(attempts))
+        detectionflag = "None"
+        attempts = 0
+        trystop()
+        mainseriesblock.set()
 
 
 def bm():
-    trystop()
-    global detectionflag
-    detectionflag = "None"
-    print("BM Mode entered")
-    global videovar
-    attempts = 0
-    videovar = "phrase1bm"
-    sleep(6.7)
-    videovar = "phrase2bm"
-    print("BAHASA STARTED")
-    while(attempts < 3):
+    while(True):
+        bmblock.wait()
+        bmblock.clear()
+        trystop()
+        global detectionflag
         detectionflag = "None"
-        print(".........")
-        if(attempts >= 1):
-            sleep(8.5)
-        print("Waiting for sound... ")
-        timeoutflag.set() 
-        detectBM()  #Blocking
-        print("DETECTION FLAG: " + detectionflag)
-        if(detectionflag == "Detected"):
-            sleep(2)
-            videovar = "dispense"
-            sleep(14)
-            print("DISPENSED")
-            arduino.write(b'd')
-            sleep(1)
-            break
-        if(detectionflag == "Timeout"):
-            print("Timeout detected")
+        print("BM Mode entered")
+        global videovar
+        attempts = 0
+        videovar = "phrase1bm"
+        sleep(6.7)
+        videovar = "phrase2bm"
+        print("BAHASA STARTED")
+        while(attempts < 3):
             detectionflag = "None"
-        attempts += 1
-        print("Attempt: "+str(attempts))
-    detectionflag = "None"
-    attempts = 0
-    trystop()
-    mainseriesblock.set()
+            print(".........")
+            if(attempts >= 1):
+                sleep(8.5)
+            print("Waiting for sound... ")
+            timeoutflag.set() 
+            detectBM()  #Blocking
+            print("DETECTION FLAG: " + detectionflag)
+            if(detectionflag == "Detected"):
+                sleep(2)
+                videovar = "dispense"
+                sleep(14)
+                print("DISPENSED")
+                arduino.write(b'd')
+                sleep(1)
+                break
+            if(detectionflag == "Timeout"):
+                print("Timeout detected")
+                detectionflag = "None"
+            attempts += 1
+            print("Attempt: "+str(attempts))
+        detectionflag = "None"
+        attempts = 0
+        trystop()
+        mainseriesblock.set()
+
+def unblockbm():
+    bmblock.set()
+
+def unblocken():
+    enblock.set()
+
+def unblockstart():
+    startblock.set()
+
+def disableBM():
+    bmbutton.config(state=DISABLED)
+
+def enableBM():
+    bmbutton.config(state=NORMAL)
+
+def disableEN():
+    enbutton.config(state=DISABLED)
+
+def enableBM():
+    enbutton.config(state=NORMAL)
+
+def disableStart():
+    startbutton.config(state=DISABLED)
+
+def enableStart():
+    startbutton.config(state=NORMAL)
 
 
 
 mainseriesblock=threading.Event()
 timeoutflag=threading.Event()
+bmblock=threading.Event()
+enblock=threading.Event()
+startblock=threading.Event()
 
 threadseeking = threading.Thread(target=seeking)
 threadmainseries=threading.Thread(target=mainseries)
 threadtimeout = threading.Thread(target=timeout)
 
-bmbutton = tk.Button(win, text="BM", font=myFont, command=bm, height=80, width=105)
+bmbutton = tk.Button(win, text="BM", font=myFont, command=unblockbm, height=80, width=125)
 bmbutton.grid(row=1, column=1, sticky=tk.NSEW)
-enbutton = tk.Button(win, text="EN", font=myFont, command=en, height=80, width=105)
+enbutton = tk.Button(win, text="EN", font=myFont, command=unblocken, height=40, width=85)
 enbutton.grid(row=1, column=2, sticky=tk.NSEW)
+startbutton = tk.Button(win, text="START", font=myFont, command=unblocken, height=40, width=85)
+startbutton.grid(row=2, column=2, sticky=tk.NSEW)
 
 if __name__ == '__main__':
     threadtimeout.start()
