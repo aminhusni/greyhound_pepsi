@@ -260,6 +260,7 @@ def bm():
         trystop()
         mainseriesblock.set()
 
+
 def unblockbm():
     print("BM START ISSUED")
     bmblock.set()
