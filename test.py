@@ -15,7 +15,7 @@ def interrupt_callback():
 def signalbole():
     print("detected")
 
-model = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
+model = "/home/pi/greyhound_pepsi/audio/tanpa kalori.pmdl"
 
 signal.signal(signal.SIGINT, signal_handler)
 

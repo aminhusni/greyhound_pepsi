@@ -9,7 +9,7 @@ import snowboydecoder
 import sys
 import signal
 
-DETECT_TIMEOUT = 8
+DETECT_TIMEOUT = 6
 interrupted = False
 interrupted2 = False
 detectionflag = "None"
@@ -28,7 +28,7 @@ def interrupt_callback():
     return interrupted
 
 
-MODEL_BM = "/home/pi/greyhound_pepsi/audio/Rasa kola hebat.pmdl"
+MODEL_BM = "/home/pi/greyhound_pepsi/audio/tanpa kalori.pmdl"
 MODEL_EN = "/home/pi/greyhound_pepsi/audio/Bold Taste.pmdl"
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -39,7 +39,7 @@ detectorBM = snowboydecoder.HotwordDetector(MODEL_BM, sensitivity=0.6)
 
 win = tk.Tk()
 win.title("Greyhound Pepsi")
-#win.attributes("-fullscreen", True)
+win.attributes("-fullscreen", True)
 myFont = tkinter.font.Font(family='Helvetica',size=12,weight="bold")
 arduino = serial.Serial('/dev/ttyUSB0',9600)
 
@@ -47,7 +47,7 @@ PEAK = 2
 videovar = "null" #Determines the video playing
 
 FULL = Path("/home/pi/Desktop/projectvideo/full.mp4")
-player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","0","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
+player1 = OMXPlayer(FULL,args=["-o", "hdmi", "--orientation","90","--loop","--no-osd"],dbus_name='org.mpris.MediaPlayer2.omxplayer0')
 
 def gotdetect():
     global detectionflag
