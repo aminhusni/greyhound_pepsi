@@ -1,50 +1,23 @@
-// Count the number of the short and long words
-// Send to Pi after 5 secs silence
-// If GPIO is HIGH, despense drink
-// Written by Stanley Seow
 
-
-#include <Servo.h>
-    Servo myservo;
-
-int i = 0;
-bool serialPlotter = 0;
-unsigned long lastCheck;
-unsigned long lastCheck2;
-unsigned int word1;
-unsigned int word2;
-unsigned int soundCheck;
-unsigned int passed;
-unsigned int failed;
 char command = 0;
 
+int PUL=11; //define Pulse pin
+int DIR=2; //define Direction pin
+int ENA=3; //define Enable Pin
 
-#define RED 9
-#define GRN 10
-#define SERVO 11
-#define MIC A0
 
 void setup() {
     Serial.begin(9600);
+pinMode (PUL, OUTPUT);
+pinMode (DIR, OUTPUT);
+pinMode (ENA, OUTPUT);
 
-    // Servo attached is servo
-    myservo.attach(SERVO);
-
-    // Move servo a bit to indicate servo is working
-    myservo.write(0);
-    delay(500);
-    myservo.write(30);
-    delay(500);
-    myservo.write(0);
 
 }
 
 void loop() {
 
     command = Serial.read();
-    if (command == 'v') {
-        voicecheck();
-    }
     if (command == 'd') {
         dispense();
     }
@@ -54,56 +27,27 @@ void loop() {
 
 void dispense(){
 
-    myservo.write(180);
+  for (int i=0; i<3200; i++)    //Forward 5000 steps
+  {
+    digitalWrite(DIR,LOW);
+    digitalWrite(ENA,HIGH);
+    digitalWrite(PUL,HIGH);
+    delayMicroseconds(50);
+    digitalWrite(PUL,LOW);
+    delayMicroseconds(50);
+  }
     delay(5000);
-    myservo.write(0);
+  for (int i=0; i<3200; i++)   //Backward 5000 steps
+  {
+    digitalWrite(DIR,HIGH);
+    digitalWrite(ENA,HIGH);
+    digitalWrite(PUL,HIGH);
+    delayMicroseconds(50);
+    digitalWrite(PUL,LOW);
+    delayMicroseconds(50);
+  }
     delay(5000);
 
 }
 
-void voicecheck(){
 
-    soundCheck = 0;
-    // Beginning of Start Voice Detection
-    while(soundCheck < 10){
-        // read the input on analog pin 0:
-        int sensor = analogRead(A0);
-        int sound = sensor - 400;
-
-        //Peak detection
-        if (sound < 100 || sound > 140) {
-            i++; 
-        }
-        delay(50);
-
-        while (millis() - lastCheck > 900) {
-
-            if (i >= 1 && i < 4) {
-                //Serial.println("Short word");
-                word1++;
-            } else if (i >= 4 && i < 10) {
-                //Serial.println("Long word");
-                word2++;
-            }
-
-            i = 0;
-            lastCheck = millis();
-            soundCheck++;
-        }
-
-        // Send to Pi after 7 secs
-        if (soundCheck > 9) {
-
-            Serial.println(word1);
-            Serial.println(word2);
-
-//            Serial.print(word1);
-//            Serial.print(",");
-//            Serial.println(word2);
-            word1 = 0;
-            word2 = 0;
-            delay(1000);
-        }
-    }
-    // End of Start Voice Detection
-}
